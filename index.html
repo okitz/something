@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>将棋</title>
+	<meta name=”robots” content=”noindex” />
+	<meta charset='utf8'>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+	<style type="text/css">
+		td {
+			width:10.5vw;
+			height:11.52vw;
+			border: 0.01vw  solid black;
+			text-align: center;
+		}
+		table{
+			background-color: #f7b071;
+			font-size:7vw;
+			font-family:'HGP行書体',cursive ;
+			border-collapse: collapse;
+		}
+		#bord {
+			margin: 2.75vw;
+  		box-shadow:0 0 0 2.75vw #f7b071, 0 0 0 2.75vw #000;
+		}
+		.kiki{
+			background-color: #f28524;
+		}
+		.nari{
+			color:red;
+		}
+		.UpsideDown{
+			transform: rotateZ( 180deg );
+		}
+	</style>
+</head>
+<body>
+ <div id="content">
+ 	<form>
+ 		<div>
+ 			<label for="user1">先手:</label>
+ 			<input type="text" id="user1" placeholder="habu">
+			<select name="user1" class="selects">
+			  <option value="human" selected>Human</option> 
+			  <option value="cpu">CPU</option>
+			</select>
+		</div>
+ 		<div>
+ 			<label for="user2">後手:</label>
+ 			<input type="text" id="user2" placeholder="huji">
+			<select name="user2" class="selects">
+			  <option value="human" selected>Human</option> 
+			  <option value="cpu">CPU</option>
+			</select>
+		 </div>
+		<div>
+				<label for='turnOn'>一人対戦モード</label>
+				<input type="checkbox" id='turnOn'>
+		</div>
+ 		<div>
+			 <input type="button" value="対局開始" id="startButton">
+ 		</div>
+ 	</form>
+ </div>
+ <div>
+	 <h2>対応していないモノ</h2>
+	 ・詰み判定<br>
+	 ・二歩、打歩詰め等の反則
+ </div>
+ <script type="text/javascript" src="game.js"></script>
+ <script type="text/javascript">
+ 	window.addEventListener("DOMContentLoaded",()=>{
+ 	[...document.getElementsByClassName('selects')].forEach((s)=>{
+ 		s.addEventListener("change",(e)=>{
+ 			const target = e.target,
+ 						value = target.options[target.selectedIndex].value,
+ 						box = document.getElementById(target.name);
+ 			if(value==="human"){
+ 				box.value="";
+ 				box.disabled = "";
+ 				box.focus();
+ 			}else if(value==="cpu"){
+ 				box.value="CPU"
+ 				box.disabled = "true";
+ 			}
+ 		},false)
+ 	})
+ 	document.getElementById("startButton").addEventListener("click",()=>{
+ 		const name1 = document.getElementById('user1').value,
+					name2 = document.getElementById('user2').value,
+					solo = document.getElementById('turnOn').checked;
+ 	new Master(name1,name2,solo);
+ 	},false)
+ })
+ </script>
+</body>
+</html>
