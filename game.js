@@ -184,6 +184,7 @@ class Koma {
         this.nari = false;
         this.obj.classList.remove('nari');
         this.obj = toObj;
+        this.name = this.baseName;
         this.obj.innerText = this.name;
     }
     kikiOverlap(index, isSameOwner) {
@@ -199,6 +200,7 @@ class Ouu extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "王";
+        this.baseName = "王";
     }
     getKiki(k) {
         const mod = k % 9,
@@ -218,6 +220,7 @@ class Gyo extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "玉";
+        this.baseName = "玉";
     }
     getKiki(k) {
         const mod = k % 9,
@@ -237,6 +240,7 @@ class His extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "飛";
+        this.baseName = "飛";
     }
     getKiki(k) {
         return [...function* (k) {
@@ -312,6 +316,7 @@ class Kak extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "角";
+        this.baseName = "角";
     }
     getKiki(k) {
         return [...function* (k) {
@@ -387,6 +392,7 @@ class Kei extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "桂";
+        this.baseName = "桂";
     }
     getKiki(k) {
         const mod = k % 9,
@@ -409,6 +415,7 @@ class Kin extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "金";
+        this.baseName = "金";        
     }
     getKiki(k) {
         const mod = k % 9,
@@ -424,6 +431,7 @@ class Gin extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "銀";
+        this.baseName = "銀";
     }
     getKiki(k) {
         const mod = k % 9,
@@ -450,6 +458,7 @@ class Kou extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "香";
+        this.baseName = "香";
     }
     getKiki(k) {
         return function* (k) {
@@ -478,6 +487,7 @@ class Hoh extends Koma {
     constructor(owner, obj, master) {
         super(owner, obj, master);
         this.name = "歩";
+        this.baseName = "歩";
     }
     getKiki(k) {
 

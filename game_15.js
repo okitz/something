@@ -292,6 +292,7 @@ var Koma = function () {
             this.nari = false;
             this.obj.classList.remove('nari');
             this.obj = toObj;
+            this.name = this.baseName;
             this.obj.innerText = this.name;
         }
     }, {
@@ -321,6 +322,7 @@ var Ouu = function (_Koma) {
         var _this5 = _possibleConstructorReturn(this, (Ouu.__proto__ || Object.getPrototypeOf(Ouu)).call(this, owner, obj, master));
 
         _this5.name = "王";
+        _this5.baseName = "王";
         return _this5;
     }
 
@@ -360,6 +362,7 @@ var Gyo = function (_Koma2) {
         var _this7 = _possibleConstructorReturn(this, (Gyo.__proto__ || Object.getPrototypeOf(Gyo)).call(this, owner, obj, master));
 
         _this7.name = "玉";
+        _this7.baseName = "玉";
         return _this7;
     }
 
@@ -399,6 +402,7 @@ var His = function (_Koma3) {
         var _this9 = _possibleConstructorReturn(this, (His.__proto__ || Object.getPrototypeOf(His)).call(this, owner, obj, master));
 
         _this9.name = "飛";
+        _this9.baseName = "飛";
         return _this9;
     }
 
@@ -762,6 +766,7 @@ var Kak = function (_Koma4) {
         var _this10 = _possibleConstructorReturn(this, (Kak.__proto__ || Object.getPrototypeOf(Kak)).call(this, owner, obj, master));
 
         _this10.name = "角";
+        _this10.baseName = "角";
         return _this10;
     }
 
@@ -1125,6 +1130,7 @@ var Kei = function (_Koma5) {
         var _this11 = _possibleConstructorReturn(this, (Kei.__proto__ || Object.getPrototypeOf(Kei)).call(this, owner, obj, master));
 
         _this11.name = "桂";
+        _this11.baseName = "桂";
         return _this11;
     }
 
@@ -1176,6 +1182,7 @@ var Kin = function (_Koma6) {
         var _this14 = _possibleConstructorReturn(this, (Kin.__proto__ || Object.getPrototypeOf(Kin)).call(this, owner, obj, master));
 
         _this14.name = "金";
+        _this14.baseName = "金";
         return _this14;
     }
 
@@ -1210,6 +1217,7 @@ var Gin = function (_Koma7) {
         var _this16 = _possibleConstructorReturn(this, (Gin.__proto__ || Object.getPrototypeOf(Gin)).call(this, owner, obj, master));
 
         _this16.name = "銀";
+        _this16.baseName = "銀";
         return _this16;
     }
 
@@ -1263,6 +1271,7 @@ var Kou = function (_Koma8) {
         var _this19 = _possibleConstructorReturn(this, (Kou.__proto__ || Object.getPrototypeOf(Kou)).call(this, owner, obj, master));
 
         _this19.name = "香";
+        _this19.baseName = "香";
         return _this19;
     }
 
@@ -1355,6 +1364,7 @@ var Hoh = function (_Koma9) {
         var _this21 = _possibleConstructorReturn(this, (Hoh.__proto__ || Object.getPrototypeOf(Hoh)).call(this, owner, obj, master));
 
         _this21.name = "歩";
+        _this21.baseName = "歩";
         return _this21;
     }
 
