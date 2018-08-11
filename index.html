@@ -66,31 +66,7 @@
 	 ・詰み判定<br>
 	 ・二歩、打歩詰め等の反則
  </div>
- <script type="text/javascript" src="game.js"></script>
- <script type="text/javascript">
- 	window.addEventListener("DOMContentLoaded",()=>{
- 	[...document.getElementsByClassName('selects')].forEach((s)=>{
- 		s.addEventListener("change",(e)=>{
- 			const target = e.target,
- 						value = target.options[target.selectedIndex].value,
- 						box = document.getElementById(target.name);
- 			if(value==="human"){
- 				box.value="";
- 				box.disabled = "";
- 				box.focus();
- 			}else if(value==="cpu"){
- 				box.value="CPU"
- 				box.disabled = "true";
- 			}
- 		},false)
- 	})
- 	document.getElementById("startButton").addEventListener("click",()=>{
- 		const name1 = document.getElementById('user1').value,
-					name2 = document.getElementById('user2').value,
-					solo = document.getElementById('turnOn').checked;
- 	new Master(name1,name2,solo);
- 	},false)
- })
- </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
+ <script type="text/javascript" src="game_15.js"></script>
 </body>
 </html>
