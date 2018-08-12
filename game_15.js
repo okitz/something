@@ -1,5 +1,7 @@
 "use strict";
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -80,9 +82,19 @@ var Master = function () {
         this.komas.forEach(function (v) {
             return v.updateKikiObj();
         });
+        window.onbeforeunload = function () {
+            return '';
+        };
     }
 
     _createClass(Master, [{
+        key: 'findKomaFromObj',
+        value: function findKomaFromObj(obj) {
+            this.komas.find(function (v) {
+                return v.obj === obj;
+            });
+        }
+    }, {
         key: 'turnChange',
         value: function turnChange() {
             this.turnCount++;
@@ -170,6 +182,9 @@ var Player = function () {
                 takenKoma.taken(td);
             }
             koma.move(toObj);
+            this.master.komas.forEach(function (v) {
+                return v.updateKikiObj();
+            });
             koma.obj.innerText = koma.name;
             this.master.turnChange();
         }
@@ -198,7 +213,6 @@ var Koma = function () {
                 });
                 return;
             }
-
             var objNumber = this.owner.master.maths.indexOf(this.obj);
             if (this.nari && !!this.getNarikiki) {
                 var _iteratorNormalCompletion = true;
@@ -270,9 +284,6 @@ var Koma = function () {
                 this.nari = confirm('成りますか？') ? true : false;
             }
             this.mochi = false;
-            this.owner.master.komas.forEach(function (v) {
-                return v.updateKikiObj();
-            });
             if (this.nari) {
                 this.obj.classList.add('nari');
             }
@@ -340,13 +351,16 @@ var Ouu = function (_Koma) {
             }).filter(function (v) {
                 var myKoma = _this6.owner.master.komas.find(function (koma) {
                     return koma.obj === _this6.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this6.owner;
+                }) || false;
+                return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this6.owner);
             });
         }
     }, {
         key: 'taken',
         value: function taken() {
-            alert('詰み');
+            if (confirm('詰み\n盤面をリセットしますか？')) {
+                new Master();
+            }
         }
     }]);
 
@@ -380,13 +394,15 @@ var Gyo = function (_Koma2) {
             }).filter(function (v) {
                 var myKoma = _this8.owner.master.komas.find(function (koma) {
                     return koma.obj === _this8.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this8.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this8.owner);
             });
         }
     }, {
         key: 'taken',
         value: function taken() {
-            alert('詰み');
+            if (confirm('詰み\n盤面をリセットしますか？')) {
+                new Master();
+            }
         }
     }]);
 
@@ -749,7 +765,7 @@ var His = function (_Koma3) {
             }).apply(this, [k]))).concat((mod !== 0 ? [-10, 8] : []).concat(mod !== 8 ? [-8, 10] : []).map(function (v) {
                 return v + k;
             }).filter(function (v) {
-                return v >= 0 && v <= 81;
+                return v >= 0 && v <= 80;
             }));
         }
     }]);
@@ -1113,7 +1129,7 @@ var Kak = function (_Koma4) {
             }).apply(this, [k]))).concat([-9, 9].concat(mod !== 0 ? [-1] : []).concat(mod !== 8 ? [1] : []).map(function (v) {
                 return v + k;
             }).filter(function (v) {
-                return v >= 0 && v <= 81;
+                return v >= 0 && v <= 80;
             }));
         }
     }]);
@@ -1145,7 +1161,7 @@ var Kei = function (_Koma5) {
             return (this.owner.type ? [left[0], right[0]] : [left[1], right[1]]).map(function (v) {
                 return v + k;
             }).filter(function (v) {
-                return v >= 0 && v <= 81;
+                return v >= 0 && v <= 80;
             }).filter(function (v) {
                 return !_this12.kikiOverlap(v, true);
             });
@@ -1165,7 +1181,7 @@ var Kei = function (_Koma5) {
             }).filter(function (v) {
                 var myKoma = _this13.owner.master.komas.find(function (koma) {
                     return koma.obj === _this13.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this13.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this13.owner);
             });
         }
     }]);
@@ -1200,7 +1216,7 @@ var Kin = function (_Koma6) {
             }).filter(function (v) {
                 var myKoma = _this15.owner.master.komas.find(function (koma) {
                     return koma.obj === _this15.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this15.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this15.owner);
             });
         }
     }]);
@@ -1235,7 +1251,7 @@ var Gin = function (_Koma7) {
             }).filter(function (v) {
                 var myKoma = _this17.owner.master.komas.find(function (koma) {
                     return koma.obj === _this17.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this17.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this17.owner);
             });
             return [-8, -9, -10, 8, 10];
         }
@@ -1254,7 +1270,7 @@ var Gin = function (_Koma7) {
             }).filter(function (v) {
                 var myKoma = _this18.owner.master.komas.find(function (koma) {
                     return koma.obj === _this18.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this18.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this18.owner);
             });
         }
     }]);
@@ -1347,7 +1363,7 @@ var Kou = function (_Koma8) {
             }).filter(function (v) {
                 var myKoma = _this20.owner.master.komas.find(function (koma) {
                     return koma.obj === _this20.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this20.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this20.owner);
             });
         }
     }]);
@@ -1373,7 +1389,7 @@ var Hoh = function (_Koma9) {
         value: function getKiki(k) {
 
             return [this.owner.type ? 9 + k : -9 + k].filter(function (v) {
-                return v >= 0 && 81 >= v;
+                return v >= 0 && 80 >= v;
             });
         }
     }, {
@@ -1391,8 +1407,93 @@ var Hoh = function (_Koma9) {
             }).filter(function (v) {
                 var myKoma = _this22.owner.master.komas.find(function (koma) {
                     return koma.obj === _this22.owner.master.maths[v];
-                }) || {};return v >= 0 && v <= 81 && myKoma.owner !== _this22.owner;
+                });return v >= 0 && v <= 80 && (!myKoma || myKoma.owner !== _this22.owner);
             });
+        }
+    }, {
+        key: 'updateKikiObj',
+        value: function updateKikiObj() {
+            var _this23 = this;
+
+            this.kikiObj = [];
+            if (this.mochi) {
+                this.kikiObj = this.owner.master.maths.filter(function (v, i, a) {
+                    var mod = i % 9;
+
+                    var _loop = function _loop(j) {
+                        var current = _this23.owner.master.komas.find(function (v) {
+                            return v.obj === a[j * 9 + mod];
+                        });
+                        if (current && current.name === '歩' && current.owner.type === _this23.owner.type) return {
+                                v: false
+                            };
+                    };
+
+                    for (var j = 0; j < 9; j++) {
+                        var _ret = _loop(j);
+
+                        if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+                    }
+                    return true;
+                }).filter(function (v) {
+                    return !_this23.owner.master.komas.find(function (koma) {
+                        return koma.obj === v;
+                    });
+                });
+                return;
+            }
+            var objNumber = this.owner.master.maths.indexOf(this.obj);
+            if (this.nari && !!this.getNarikiki) {
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
+
+                try {
+                    for (var _iterator3 = this.getNarikiki(objNumber)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                        var kiki = _step3.value;
+
+                        this.kikiObj.push(this.owner.master.maths[kiki]);
+                    }
+                } catch (err) {
+                    _didIteratorError3 = true;
+                    _iteratorError3 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                            _iterator3.return();
+                        }
+                    } finally {
+                        if (_didIteratorError3) {
+                            throw _iteratorError3;
+                        }
+                    }
+                }
+            } else {
+                var _iteratorNormalCompletion4 = true;
+                var _didIteratorError4 = false;
+                var _iteratorError4 = undefined;
+
+                try {
+                    for (var _iterator4 = this.getKiki(objNumber)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                        var _kiki2 = _step4.value;
+
+                        this.kikiObj.push(this.owner.master.maths[_kiki2]);
+                    }
+                } catch (err) {
+                    _didIteratorError4 = true;
+                    _iteratorError4 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                            _iterator4.return();
+                        }
+                    } finally {
+                        if (_didIteratorError4) {
+                            throw _iteratorError4;
+                        }
+                    }
+                }
+            }
         }
     }]);
 

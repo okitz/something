@@ -59,6 +59,12 @@ class Master {
         this.contentDiv.appendChild(divOthers);
         this.turnChange();
         this.komas.forEach(v => v.updateKikiObj());
+        window.onbeforeunload = function() {
+            return '';
+        };
+    }
+    findKomaFromObj(obj){
+        this.komas.find(v=>v.obj===obj);
     }
     turnChange() {
         this.turnCount++;
@@ -120,6 +126,7 @@ class Player {
             takenKoma.taken(td);
         }
         koma.move(toObj);
+        this.master.komas.forEach(v => v.updateKikiObj());
         koma.obj.innerText = koma.name;
         this.master.turnChange();
     }
@@ -138,7 +145,6 @@ class Koma {
             this.kikiObj = this.owner.master.maths.filter(v => v.innerText === '');
             return;
         }
-
         const objNumber = this.owner.master.maths.indexOf(this.obj);
         if (this.nari && !!this.getNarikiki) {
             for (let kiki of this.getNarikiki(objNumber)) {
@@ -166,7 +172,6 @@ class Koma {
             this.nari = confirm('成りますか？') ? true : false;
         }
         this.mochi = false;
-        this.owner.master.komas.forEach(v => v.updateKikiObj());
         if (this.nari) {
             this.obj.classList.add('nari');
         }
@@ -208,11 +213,12 @@ class Ouu extends Koma {
               left = mod !== 0 ? [-10, -1, 8] : [],
               right = mod !== 8 ? [-8, 1, 10] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+              const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v])||false;
+return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
     }
     taken() {
-        alert('詰み');
+        if(confirm('詰み\n盤面をリセットしますか？')){new Master;}
     }
 }
 
@@ -228,11 +234,11 @@ class Gyo extends Koma {
               left = mod !== 0 ? [-10, -1, 8] : [],
               right = mod !== 8 ? [-8, 1, 10] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
     }
     taken() {
-        alert('詰み');
+        if(confirm('詰み\n盤面をリセットしますか？')){new Master;}
     }
 }
 
@@ -309,7 +315,7 @@ class His extends Koma {
                     break;
                 };
             } //right
-        }.apply(this, [k])].concat((mod !== 0 ? [-10, 8] : []).concat(mod !== 8 ? [-8, 10] : []).map(v => v + k).filter(v => v >= 0 && v <= 81));
+        }.apply(this, [k])].concat((mod !== 0 ? [-10, 8] : []).concat(mod !== 8 ? [-8, 10] : []).map(v => v + k).filter(v => v >= 0 && v <= 80));
     }
 }
 class Kak extends Koma {
@@ -385,7 +391,7 @@ class Kak extends Koma {
                     break;
                 };
             } //rdown
-        }.apply(this, [k])].concat([-9, 9].concat(mod !== 0 ? [-1] : []).concat(mod !== 8 ? [1] : []).map(v => v + k).filter(v => v >= 0 && v <= 81));
+        }.apply(this, [k])].concat([-9, 9].concat(mod !== 0 ? [-1] : []).concat(mod !== 8 ? [1] : []).map(v => v + k).filter(v => v >= 0 && v <= 80));
     }
 }
 class Kei extends Koma {
@@ -398,7 +404,7 @@ class Kei extends Koma {
         const mod = k % 9,
               left = mod !== 0 ? [17, -19] : -1,
               right = mod !== 8 ? [19, -17] : -1;
-        return (this.owner.type ? [left[0], right[0]] : [left[1], right[1]]).map(v => v + k).filter(v => v >= 0 && v <= 81).filter(v => !this.kikiOverlap(v, true));
+        return (this.owner.type ? [left[0], right[0]] : [left[1], right[1]]).map(v => v + k).filter(v => v >= 0 && v <= 80).filter(v => !this.kikiOverlap(v, true));
     }
     getNarikiki(k) {
         this.name = '圭';
@@ -407,7 +413,7 @@ class Kei extends Koma {
               left = mod !== 0 ? [this.owner.type ? 8 : -10, -1] : [],
               right = mod !== 8 ? [this.owner.type ? 10 : -8, 1] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
     }
 }
@@ -423,7 +429,7 @@ class Kin extends Koma {
               left = mod !== 0 ? [this.owner.type ? 8 : -10, -1] : [],
               right = mod !== 8 ? [this.owner.type ? 10 : -8, 1] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
     }
 }
@@ -439,7 +445,7 @@ class Gin extends Koma {
               left = mod !== 0 ? [-10, 8] : [],
               right = mod !== 8 ? [-8, 10] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
         return [-8, -9, -10, 8, 10];
     }
@@ -450,7 +456,7 @@ class Gin extends Koma {
               left = mod !== 0 ? [this.owner.type ? 8 : -10, -1] : [],
               right = mod !== 8 ? [this.owner.type ? 10 : -8, 1] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
     }
 }
@@ -479,7 +485,7 @@ class Kou extends Koma {
               left = mod !== 0 ? [this.owner.type ? 8 : -10, -1] : [],
               right = mod !== 8 ? [this.owner.type ? 10 : -8, 1] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
     }
 }
@@ -491,7 +497,7 @@ class Hoh extends Koma {
     }
     getKiki(k) {
 
-        return [this.owner.type ? 9 + k : -9 + k].filter(v => v >= 0 && 81 >= v);
+        return [this.owner.type ? 9 + k : -9 + k].filter(v => v >= 0 && 80 >= v);
     }
     getNarikiki(k) {
         this.name = 'と';
@@ -500,8 +506,34 @@ class Hoh extends Koma {
               left = mod !== 0 ? [this.owner.type ? 8 : -10, -1] : [],
               right = mod !== 8 ? [this.owner.type ? 10 : -8, 1] : [];
         return result.concat(left).concat(right).map(v => v + k).filter(v => {
-            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]) || {};return v >= 0 && v <= 81 && myKoma.owner !== this.owner;
+            const myKoma = this.owner.master.komas.find(koma => koma.obj === this.owner.master.maths[v]);return (v >= 0) && (v <= 80) && (!myKoma ||  (myKoma.owner !== this.owner));
         });
+    }
+    updateKikiObj() {
+        this.kikiObj = [];
+        if (this.mochi) {
+            this.kikiObj = this.owner.master.maths
+            .filter((v,i,a)=>{
+                const mod = i%9;
+                for(let j=0;j<9;j++){
+                    const current = this.owner.master.komas.find(v=>v.obj===a[j*9+mod]);
+                    if(current&&current.name==='歩'&&current.owner.type===this.owner.type)return false;
+                }
+  return true;
+            })
+            .filter(v => !this.owner.master.komas.find(koma=>koma.obj===v)); 
+            return;
+        }
+        const objNumber = this.owner.master.maths.indexOf(this.obj);
+        if (this.nari && !!this.getNarikiki) {
+            for (let kiki of this.getNarikiki(objNumber)) {
+                this.kikiObj.push(this.owner.master.maths[kiki]);
+            }
+        } else {
+            for (let kiki of this.getKiki(objNumber)) {
+                this.kikiObj.push(this.owner.master.maths[kiki]);
+            }
+        }
     }
 }
 
